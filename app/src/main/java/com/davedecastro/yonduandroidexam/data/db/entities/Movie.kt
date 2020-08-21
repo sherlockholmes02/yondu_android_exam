@@ -2,6 +2,8 @@ package com.davedecastro.yonduandroidexam.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.davedecastro.yonduandroidexam.utils.toDate
+import com.davedecastro.yonduandroidexam.utils.toReadableDateString
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "movies")
@@ -45,4 +47,9 @@ data class Movie(
     var watchList: Int,
     @SerializedName("your_rating")
     var yourRating: Int
-)
+) {
+
+    val readableReleaseDate: String
+        get() = releaseDate.toDate()?.toReadableDateString() ?: ""
+
+}
