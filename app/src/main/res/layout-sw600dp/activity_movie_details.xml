@@ -59,12 +59,14 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/lbl_name" />
+                            android:text="@string/lbl_name"
+                            android:textSize="20sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_movie_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             tools:text="Ghost in the Shell" />
 
@@ -72,12 +74,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="@string/lbl_genre" />
+                            android:text="@string/lbl_genre"
+                            android:textSize="20sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_movie_genre"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             tools:text="Action, Crime, Drama" />
 
@@ -85,12 +89,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="@string/lbl_advisory_rating" />
+                            android:text="@string/lbl_advisory_rating"
+                            android:textSize="20sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_movie_advisoryRating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             tools:text="PG" />
 
@@ -98,12 +104,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="@string/lbl_release_date" />
+                            android:text="@string/lbl_release_date"
+                            android:textSize="20sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_movie_releaseDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             tools:text="2017-03-29" />
 
@@ -111,12 +119,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="@string/lbl_synopsis" />
+                            android:text="@string/lbl_synopsis"
+                            android:textSize="20sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_movie_synopsis"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             tools:text="A cyborg policewoman attempts to break down a nefarious computer hacker" />
 
@@ -134,6 +144,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/colorAccent"
         android:text="@string/btn_view_seat_map"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
 </RelativeLayout>
