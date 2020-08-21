@@ -1,7 +1,8 @@
-package com.davedecastro.yonduandroidexam
+package com.davedecastro.yonduandroidexam.ui.details
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.davedecastro.yonduandroidexam.R
 
 class MovieDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
