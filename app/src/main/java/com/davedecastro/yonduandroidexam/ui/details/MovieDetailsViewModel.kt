@@ -18,5 +18,4 @@ class MovieDetailsViewModel(
     val movieCache by lazyDeferred {
         movieRepository.getMovieCache()
     }
-
 }
