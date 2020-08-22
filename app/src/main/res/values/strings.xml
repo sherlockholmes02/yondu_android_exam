@@ -4,6 +4,7 @@
     <string name="lbl_genre">Genre</string>
     <string name="lbl_advisory_rating">Advisory Rating</string>
     <string name="lbl_duration">Duration</string>
+    <string name="lbl_casts">Casts</string>
     <string name="lbl_release_date">Release Date</string>
     <string name="lbl_synopsis">Synopsis</string>
     <string name="btn_view_seat_map">View Seat Map</string>

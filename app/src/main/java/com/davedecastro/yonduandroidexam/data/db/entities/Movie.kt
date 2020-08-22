@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 import com.davedecastro.yonduandroidexam.utils.toDate
 import com.davedecastro.yonduandroidexam.utils.toReadableDateString
 import com.google.gson.annotations.SerializedName
+import kotlin.math.roundToInt
 
 @Entity(tableName = "movies")
 data class Movie(
@@ -35,16 +36,16 @@ data class Movie(
     var synopsis: String,
     var trailer: String,
     @SerializedName("average_rating")
-    var averageRating: String,
+    var averageRating: String?,
     @SerializedName("total_reviews")
-    var totalReviews: String,
+    var totalReviews: String?,
     var variants: List<String>,
     var theater: String,
     var order: Int,
     @SerializedName("is_featured")
     var isFeatured: Int,
     @SerializedName("watch_list")
-    var watchList: Int,
+    var watchList: Boolean,
     @SerializedName("your_rating")
     var yourRating: Int
 ) {
@@ -52,4 +53,18 @@ data class Movie(
     val readableReleaseDate: String
         get() = releaseDate.toDate()?.toReadableDateString() ?: ""
 
+    val duration: String
+        get() {
+            val time = runtimeMins.toDouble()
+            val hours = time / 60
+            val minutes = time % 60
+            return if (minutes == 0.00) {
+                hours.roundToInt().toString() + "hr"
+            } else {
+                hours.toString().substringBefore(".") + "hr " + minutes.roundToInt().toString() + "mins"
+            }
+        }
+
+    val casts: String
+        get() = cast.toString().replace(", ", "\n").replace("[", "").replace("]", "")
 }

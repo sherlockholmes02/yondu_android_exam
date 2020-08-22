@@ -3,7 +3,7 @@ package com.davedecastro.yonduandroidexam.utils
 import java.text.SimpleDateFormat
 import java.util.*
 
-private val readableDateFormat = SimpleDateFormat("MMMM DD, YYYY", Locale.US)
+private val readableDateFormat = SimpleDateFormat("MMMM d, YYYY", Locale.US)
 private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
 fun Date.toReadableDateString(): String =
