@@ -2,6 +2,7 @@ package com.davedecastro.yonduandroidexam.ui.details
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -73,14 +74,16 @@ class MovieDetailsActivity : AppCompatActivity(), MovieDetailsInterface {
             binding.pbMovieLoader.visibility = View.GONE
             binding.rlMovieLayout.visibility = View.VISIBLE
             binding.movie = it
-            binding.releaseDate = it.readableReleaseDate
-            binding.duration = it.duration
-            binding.casts = it.casts
-            it.poster.into(binding.ivMovieImage)
-            it.posterLandscape.into(binding.ivMovieImageLandscape)
+            if (it != null) {
+                binding.releaseDate = it.readableReleaseDate
+                binding.duration = it.duration
+                binding.casts = it.casts
+                it.poster.into(binding.ivMovieImage)
+                it.posterLandscape.into(binding.ivMovieImageLandscape)
+            }
         })
 
-        binding.btnMovieView.setOnClickListener {
+        binding.btnMovieView.clickWithDebounce {
             onViewSeatMap()
         }
     }
@@ -117,5 +120,18 @@ class MovieDetailsActivity : AppCompatActivity(), MovieDetailsInterface {
                 }.show()
             }
         }
+    }
+
+    fun View.clickWithDebounce(debounceTime: Long = 600L, action: () -> Unit) {
+        this.setOnClickListener(object : View.OnClickListener {
+            private var lastClickTime: Long = 0
+
+            override fun onClick(v: View) {
+                if (SystemClock.elapsedRealtime() - lastClickTime < debounceTime) return
+                else action()
+
+                lastClickTime = SystemClock.elapsedRealtime()
+            }
+        })
     }
 }

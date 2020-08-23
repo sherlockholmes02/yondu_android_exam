@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.davedecastro.yonduandroidexam.R
 import com.davedecastro.yonduandroidexam.data.db.entities.MovieDate
 import com.davedecastro.yonduandroidexam.data.db.entities.Schedule
@@ -16,13 +17,18 @@ import com.davedecastro.yonduandroidexam.data.network.MovieService
 import com.davedecastro.yonduandroidexam.data.repository.MovieRepository
 import com.davedecastro.yonduandroidexam.databinding.ActivityScheduleBinding
 import com.davedecastro.yonduandroidexam.ui.schedule.adapters.DateArrayAdapter
+import com.davedecastro.yonduandroidexam.ui.schedule.adapters.SeatsAdapter
 import com.davedecastro.yonduandroidexam.utils.Coroutines
 import com.davedecastro.yonduandroidexam.utils.RetrofitSingleton
 
-class ScheduleActivity : AppCompatActivity() {
+
+class ScheduleActivity : AppCompatActivity(), SeatsInterface, ScheduleInterface {
     lateinit var binding: ActivityScheduleBinding
     private lateinit var viewModel: ScheduleViewModel
     private lateinit var schedule: Schedule
+
+    private val seatsAdapter = SeatsAdapter()
+    private var isSeatmapLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +56,14 @@ class ScheduleActivity : AppCompatActivity() {
     }
 
     private fun bindUI() {
+
+        binding.rvScheduleSeats.apply {
+            layoutManager =
+                LinearLayoutManager(this@ScheduleActivity, LinearLayoutManager.HORIZONTAL, true)
+            setHasFixedSize(true)
+            adapter = seatsAdapter
+        }
+
         Coroutines.main {
             binding.theater = intent.getStringExtra("theater")
             val scheduleObserver = viewModel.schedule.await()
@@ -58,6 +72,16 @@ class ScheduleActivity : AppCompatActivity() {
                 setSpinnerDates()
                 setSpinnerCinemas()
                 setSpinnerTime()
+            })
+
+            val seatmapObserver = viewModel.seatmap.await()
+            seatmapObserver.observe(this, Observer {
+                binding.sclScheduleSeatmap.setSeatmapData(it)
+                binding.sclScheduleSeatmap.visibility = View.VISIBLE
+                binding.sclScheduleSeatmap.seatsInterface = this
+                isSeatmapLoaded = true
+                binding.llScheduleLayout.visibility = View.VISIBLE
+                binding.pbScheduleLoader.visibility = View.GONE
             })
         }
     }
@@ -81,6 +105,9 @@ class ScheduleActivity : AppCompatActivity() {
                         android.R.layout.simple_spinner_item, labels
                     )
                 arrayAdapter.setDropDownViewResource(R.layout.spinner_item)
+                if (isSeatmapLoaded) {
+                    toggleVisibility(true)
+                }
             } else {
                 arrayAdapter = getEmptyAdapter()
             }
@@ -88,6 +115,19 @@ class ScheduleActivity : AppCompatActivity() {
         } else {
             binding.spnScheduleTime.adapter = getEmptyAdapter()
         }
+    }
+
+    private fun toggleVisibility(isVisible: Boolean) {
+        var visibility: Int = if (isVisible) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+        binding.sclScheduleSeatmap.visibility = visibility
+        binding.llScheduleTotal.visibility = visibility
+        binding.tvScheduleSeats.visibility = visibility
+        binding.rvScheduleSeats.visibility = visibility
+        binding.llScheduleLabels.visibility = visibility
     }
 
     private fun getEmptyAdapter(): ArrayAdapter<String> {
@@ -98,6 +138,7 @@ class ScheduleActivity : AppCompatActivity() {
                 android.R.layout.simple_spinner_item, emptyList
             )
         arrayAdapter.setDropDownViewResource(R.layout.spinner_item)
+        toggleVisibility(false)
         return arrayAdapter
     }
 
@@ -158,5 +199,34 @@ class ScheduleActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onSeatSelected(seats: List<String>) {
+        seatsAdapter.submitList(seats)
+        seatsAdapter.notifyDataSetChanged()
+        binding.rvScheduleSeats.apply {
+            adapter = seatsAdapter
+        }
+        totalPrice(seats.size)
+    }
+
+    private fun totalPrice(size: Int) {
+        val movieDate = binding.spnScheduleDate.selectedItem as MovieDate
+        val cinema = binding.spnScheduleCinema.selectedItem.toString()
+        val parent = movieDate.id + "-" + cinema
+            .substringAfter("Cinema ")
+        val price = schedule.times.filter { it.parent == parent }
+            .map { it ->
+                it.times.filter { it.label == binding.spnScheduleTime.selectedItem }
+                    .map { it.price }
+            }.toString().replace("[[", "").replace("]]", "")
+
+        val totalPrice = price.toInt() * size
+        binding.total = totalPrice.toString()
+    }
+
+    override fun onFetchStarted() {
+        binding.pbScheduleLoader.visibility = View.VISIBLE
+        binding.llScheduleLayout.visibility = View.GONE
     }
 }

@@ -13,6 +13,6 @@ data class MovieTime(
     var popcornLabel: String,
     @SerializedName("seating_type")
     var seatingType: String,
-    var type: String,
+    var price: String,
     var variant: String?
 )

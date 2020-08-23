@@ -11,6 +11,11 @@
     <string name="lbl_date">Date</string>
     <string name="lbl_cinema">Cinema</string>
     <string name="lbl_time">Time</string>
+    <string name="lbl_selected_seats">Your selected seats</string>
     <string name="lbl_check_internet_connect">Please check your internet connection</string>
     <string name="lbl_close">Close</string>
+    <string name="lbl_total">Total</string>
+    <string name="lbl_reserved">Reserved</string>
+    <string name="lbl_available">Available</string>
+    <string name="lbl_selected">Selected</string>
 </resources>

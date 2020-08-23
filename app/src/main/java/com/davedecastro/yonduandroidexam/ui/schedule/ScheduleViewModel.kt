@@ -8,8 +8,15 @@ class ScheduleViewModel(
     private val movieRepository: MovieRepository
 ) : ViewModel() {
 
+    var scheduleInterface: ScheduleInterface? = null
+
     val schedule by lazyDeferred {
+        scheduleInterface?.onFetchStarted()
         movieRepository.fetchSchedule()
+    }
+
+    val seatmap by lazyDeferred {
+        movieRepository.fetchSeatMap()
     }
 
 }
